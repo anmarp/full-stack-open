@@ -7,3 +7,7 @@ note over Server:
 Server responds with HTTP 201 Created
 end note
 Server-->Browser: data.json
+note over Browser:
+Browser executes event handler
+that renders received JSON data
+end note
