@@ -1,0 +1,9 @@
+note over Browser:
+User adds new note and browser
+sends it in JSON format to server
+end note
+Browser->Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note over Server:
+Server responds with HTTP 201 Created
+end note
+Server-->Browser: data.json
