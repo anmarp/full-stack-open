@@ -20,7 +20,7 @@ My solutions: [Course information](https://github.com/anmarp/full-stack-open/tre
 
 ### :heavy_multiplication_x: Part 2: Communicating with server
 
-My solutions: [Course information](https://github.com/anmarp/full-stack-open/tree/master/part-1/course-info), [Phonebook](https://github.com/anmarp/full-stack-open/tree/master/part-2/phonebook)
+My solutions: [Course information](https://github.com/anmarp/full-stack-open/tree/master/part-1/course-info), [Phonebook](https://github.com/anmarp/full-stack-open/tree/master/part-2/phonebook), [Countries](https://github.com/anmarp/full-stack-open/tree/master/part-2/countries)
 
 ### :heavy_multiplication_x: Part 3: Programming a server with NodeJS and Express
 ### :heavy_multiplication_x: Part 4: Testing Express servers, user administration
