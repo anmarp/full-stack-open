@@ -29,7 +29,8 @@ const App = () => {
 
   return (
     <div>
-      Search countries: <input value={searchTerm} onChange={handleSearchTermChange} />
+      <h1>Countries</h1>
+      Search: <input value={searchTerm} onChange={handleSearchTermChange} />
       <SearchResult searchResult={searchResult} eventHandler={handleClick} />
     </div>
   )
