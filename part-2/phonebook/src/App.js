@@ -3,7 +3,6 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import personService from './services/persons'
 import Input from './components/Input'
-import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -56,6 +55,18 @@ const App = () => {
     setSearchTerm(event.target.value)
   }
 
+  const handleDelete = (event) => {
+    const id = parseInt(event.target.value)
+    const name = event.target.dataset.name
+
+    if (window.confirm(`Do you want to delete ${name}?`)) { 
+      personService
+      .deleteById(id)
+
+      setPersons(persons.filter(person => person.id !== id))
+    }   
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
@@ -69,7 +80,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} eventHandler={handleDelete} />
     </div>
   )
 }
