@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
+import personService from './services/persons'
 import Input from './components/Input'
 import axios from 'axios'
 
@@ -11,12 +12,10 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -36,9 +35,13 @@ const App = () => {
       name: newName, number: newNumber
     }
 
-    setPersons(persons.concat(personObject))
-    setNewName('')
-    setNewNumber('')
+    personService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   const handleNameChange = (event) => {
@@ -56,7 +59,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Input text="Search person" value={searchTerm} eventHandler={handleSearchTermChange} />
+      <Input text="Search" value={searchTerm} eventHandler={handleSearchTermChange} />
       <h2>Add person</h2>
       <PersonForm
         addPerson={addPerson}
