@@ -26,7 +26,21 @@ const App = () => {
     event.preventDefault()
 
     if (persons.find(person => person.name.toLowerCase() === newName.toLowerCase())) {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to the phonebook. Replace the old number with a new one?`)) {
+        const selectedPerson = {
+          ...persons.find(person => person.name.toLowerCase() === newName.toLowerCase()),
+          number: newNumber
+        }
+
+        personService
+          .updateNumber(selectedPerson.id, selectedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== selectedPerson.id ? person : returnedPerson))
+            setNewName('')
+            setNewNumber('')
+          })
+      }
+
       return
     }
 
@@ -59,12 +73,12 @@ const App = () => {
     const id = parseInt(event.target.value)
     const name = event.target.dataset.name
 
-    if (window.confirm(`Do you want to delete ${name}?`)) { 
+    if (window.confirm(`Do you want to delete ${name}?`)) {
       personService
-      .deleteById(id)
+        .deleteById(id)
 
       setPersons(persons.filter(person => person.id !== id))
-    }   
+    }
   }
 
   return (
