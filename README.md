@@ -18,7 +18,10 @@ Getting familiar with the basics and best practices of JavaScript and React libr
 
 My solutions: [Course information](https://github.com/anmarp/full-stack-open/tree/master/part-1/course-info), [Unicafe](https://github.com/anmarp/full-stack-open/tree/master/part-1/unicafe), [Anecdotes](https://github.com/anmarp/full-stack-open/tree/master/part-1/anecdotes)
 
-### :heavy_multiplication_x: Part 2: Communicating with server
+### :heavy_check_mark: Part 2: Communicating with server
+Learning more about React, especially how to use Axios with React to access data stored in a server. 
+
+<sub>:heavy_check_mark: 20/20 completed on 22 September 2020</sub>
 
 My solutions: [Course information](https://github.com/anmarp/full-stack-open/tree/master/part-1/course-info), [Phonebook](https://github.com/anmarp/full-stack-open/tree/master/part-2/phonebook), [Countries](https://github.com/anmarp/full-stack-open/tree/master/part-2/countries)
 
