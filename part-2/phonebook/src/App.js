@@ -93,7 +93,7 @@ const App = () => {
   }
 
   const deletePerson = (event) => {
-    const id = parseInt(event.target.value)
+    const id = event.target.value
     const name = event.target.dataset.name
 
     if (window.confirm(`Delete ${name}?`)) {
