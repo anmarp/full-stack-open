@@ -25,7 +25,13 @@ Learning more about React, especially how to use Axios with React to access data
 
 My solutions: [Course information](https://github.com/anmarp/full-stack-open/tree/master/part-1/course-info), [Phonebook](https://github.com/anmarp/full-stack-open/tree/master/part-2/phonebook), [Countries](https://github.com/anmarp/full-stack-open/tree/master/part-2/countries)
 
-### :heavy_multiplication_x: Part 3: Programming a server with NodeJS and Express
+### :heavy_check_mark: Part 3: Programming a server with NodeJS and Express
+Back end exercises: implementing a simple REST API and using MongoDB database.
+
+<sub>:heavy_check_mark: 22/22 completed on 28 September 2020</sub>
+
+My solutions: [Phonebook (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-2/phonebook), [Phonebook (back end)](https://github.com/anmarp/fso-phonebook)
+
 ### :heavy_multiplication_x: Part 4: Testing Express servers, user administration
 ### :heavy_multiplication_x: Part 5: Testing React apps
 ### :heavy_multiplication_x: Part 6: State management with Redux
