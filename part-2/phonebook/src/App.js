@@ -43,20 +43,21 @@ const App = () => {
             setNewNumber('')
           })
           .catch(error => {
-            console.log(error)
             setIsError(true)
-            setPersons(persons.filter(person => person.id !== selectedPerson.id))
 
-            setNotificationMessage(
-              `Error: Could not change the number. ${selectedPerson.name} has already been removed from the server.`
-            )
+            if (error.response.status === 404) {
+              setPersons(persons.filter(person => person.id !== selectedPerson.id))
+              setNotificationMessage(
+                `Error: Could not change the number. ${selectedPerson.name} has already been removed from the server.`
+              )
+            } else {
+              setNotificationMessage(error.response.data.error)
+            }
 
             setTimeout(() => {
               setNotificationMessage(null)
               setIsError(false)
             }, 5000)
-
-            return
           })
 
         setNotificationMessage(
@@ -67,29 +68,31 @@ const App = () => {
           setNotificationMessage(null)
         }, 5000)
       }
+    } else {
 
-      return
+      const personObject = {
+        name: newName, number: newNumber
+      }
+
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+        .catch(error => {
+          setNotificationMessage(error.response.data.error)
+        })
+
+      setNotificationMessage(
+        `Added ${personObject.name}`
+      )
+
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
     }
-
-    const personObject = {
-      name: newName, number: newNumber
-    }
-
-    personService
-      .create(personObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
-
-    setNotificationMessage(
-      `Added ${personObject.name}`
-    )
-
-    setTimeout(() => {
-      setNotificationMessage(null)
-    }, 5000)
   }
 
   const deletePerson = (event) => {
