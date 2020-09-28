@@ -82,6 +82,7 @@ const App = () => {
           setNewNumber('')
         })
         .catch(error => {
+          setIsError(true)
           setNotificationMessage(error.response.data.error)
         })
 
@@ -91,6 +92,7 @@ const App = () => {
 
       setTimeout(() => {
         setNotificationMessage(null)
+        setIsError(false)
       }, 5000)
     }
   }
