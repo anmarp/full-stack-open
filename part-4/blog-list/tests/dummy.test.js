@@ -1,4 +1,3 @@
-const { TestScheduler } = require('jest')
 const listHelper = require('../utils/list-helper')
 
 test('dummy returns one', () => {
