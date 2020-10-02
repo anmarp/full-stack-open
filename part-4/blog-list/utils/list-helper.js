@@ -1,4 +1,5 @@
-const logger = require("./logger")
+const maxBy = require('lodash/maxBy')
+const countBy = require('lodash/countBy')
 
 const dummy = (blogs) => {
   return 1
@@ -20,16 +21,9 @@ const mostBlogs = (blogs) => {
   if (blogs.length === 0) {
     return null
   } else {
-    let mostActiveAuthor = { author: '', blogs: 0 }
+    const mostActiveAuthor = maxBy(Object.entries(countBy(blogs, value => value.author)), (author) => author[1])
 
-    blogs.forEach(blog => {
-      const blogsByAuthor = blogs.filter(b => b.author === blog.author).length
-      if (blogsByAuthor > mostActiveAuthor.blogs) {
-        mostActiveAuthor = { author: blog.author, blogs: blogsByAuthor }
-      }
-    })
-
-    return mostActiveAuthor
+    return { author: mostActiveAuthor[0], blogs: mostActiveAuthor[1] }
   }
 }
 
