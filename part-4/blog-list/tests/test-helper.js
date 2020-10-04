@@ -26,8 +26,14 @@ const newBlogWithoutLikes = {
   url: 'https://www.elkook.com/'
 }
 
+const newBlogWithoutTitleAndUrl = {
+  author: 'Bee Logger',
+  likes: 3
+}
+
 module.exports = {
   initialBlogs,
   newBlog,
-  newBlogWithoutLikes
+  newBlogWithoutLikes,
+  newBlogWithoutTitleAndUrl
 }

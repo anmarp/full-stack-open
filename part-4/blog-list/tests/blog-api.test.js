@@ -56,6 +56,13 @@ test('likes of a new blog default to 0 when not defined', async () => {
   expect(response.body[helper.initialBlogs.length]).toHaveProperty('likes', 0)
 })
 
+test('trying to add a new blog without title and url leads to status code 400', async () => {
+  await api
+    .post('/api/blogs')
+    .send(helper.newBlogWithoutTitleAndUrl)
+    .expect(400)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
