@@ -13,54 +13,58 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-test('all blogs are returned in JSON format', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+describe('when the database is not empty', () => {
+  test('all blogs are returned in JSON format', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
-  const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(helper.initialBlogs.length)
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
+  })
+
+  test('unique identifier property of returned blogs is named id', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
+  })
+
 })
 
-test('unique identifier property is named id', async () => {
-  const response = await api.get('/api/blogs')
-  expect(response.body[0].id).toBeDefined()
-})
+describe('when a post request is made', () => {
+  test('a new blog is successfully saved to the database', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
-test('a new blog is successfully added to the database', async () => {
-  await api
-    .post('/api/blogs')
-    .send(helper.newBlog)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
 
-  const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
+    for (i = 0; i < Object.keys(helper.newBlog).length; i++) {
+      expect(response.body[helper.initialBlogs.length])
+        .toHaveProperty(Object.keys(helper.newBlog)[i], Object.values(helper.newBlog)[i])
+    }
+  })
 
-  for (i = 0; i < Object.keys(helper.newBlog).length; i++) {
-    expect(response.body[helper.initialBlogs.length])
-      .toHaveProperty(Object.keys(helper.newBlog)[i], Object.values(helper.newBlog)[i])
-  }
-})
+  test('likes of a new blog default to 0 if not defined', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlogWithoutLikes)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
-test('likes of a new blog default to 0 when not defined', async () => {
-  await api
-    .post('/api/blogs')
-    .send(helper.newBlogWithoutLikes)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+    const response = await api.get('/api/blogs')
+    expect(response.body[helper.initialBlogs.length]).toHaveProperty('likes', 0)
+  })
 
-  const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
-  expect(response.body[helper.initialBlogs.length]).toHaveProperty('likes', 0)
-})
-
-test('trying to add a new blog without title and url leads to status code 400', async () => {
-  await api
-    .post('/api/blogs')
-    .send(helper.newBlogWithoutTitleAndUrl)
-    .expect(400)
+  test('the server responds with a 400 status code if a new blog is missing required properties', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlogWithoutTitleAndUrl)
+      .expect(400)
+  })
 })
 
 afterAll(() => {
