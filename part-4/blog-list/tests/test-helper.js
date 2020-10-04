@@ -31,9 +31,14 @@ const newBlogWithoutTitleAndUrl = {
   likes: 3
 }
 
+const updatedBlog = {
+  likes: 4
+}
+
 module.exports = {
   initialBlogs,
   newBlog,
   newBlogWithoutLikes,
-  newBlogWithoutTitleAndUrl
+  newBlogWithoutTitleAndUrl,
+  updatedBlog
 }

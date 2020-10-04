@@ -83,6 +83,22 @@ describe('when a delete request is made', () => {
   })
 })
 
+describe('updating a blog', () => {
+  test('updates its likes property correctly', async () => {
+    let response = await api.get('/api/blogs')
+    const blogToUpdate = response.body[0]
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(helper.updatedBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    response = await api.get('/api/blogs')
+    expect(response.body[0]).toHaveProperty('likes', helper.updatedBlog.likes)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
