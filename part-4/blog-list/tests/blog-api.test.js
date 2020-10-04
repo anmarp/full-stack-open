@@ -4,12 +4,19 @@ const helper = require('./test-helper')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
   let blogObjects = helper.initialBlogs
     .map(blog => new Blog(blog))
-  const promiseArray = blogObjects.map(blog => blog.save())
+  let promiseArray = blogObjects.map(blog => blog.save())
+  await Promise.all(promiseArray)
+
+  await User.deleteMany({})
+  let userObjects = helper.initialUsers
+    .map(user => new User(user))
+  promiseArray = userObjects.map(user => user.save())
   await Promise.all(promiseArray)
 })
 
@@ -76,7 +83,7 @@ describe('when a delete request is made', () => {
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
       .expect(204)
-    
+
     response = await api.get('/api/blogs')
     expect(response.body.length).toBe(blogsLength - 1)
     expect(response.body[0]).not.toEqual(blogToDelete)
@@ -96,6 +103,57 @@ describe('updating a blog', () => {
 
     response = await api.get('/api/blogs')
     expect(response.body[0]).toHaveProperty('likes', helper.updatedBlog.likes)
+  })
+})
+
+describe('when a new user is added', () => {
+  test('saving the user succeeds if all properties are valid', async () => {
+    await api
+      .post('/api/users')
+      .send(helper.newUser)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/users')
+    expect(response.body).toHaveLength(helper.initialUsers.length + 1)
+
+    for (i = 0; i < Object.keys(helper.newUser).length - 1; i++) {
+      expect(response.body[helper.initialUsers.length])
+        .toHaveProperty(Object.keys(helper.newUser)[i], Object.values(helper.newUser)[i])
+    }
+  })
+
+  describe('server responds with a 400 status code', () => {
+    test('if the username is not unique', async () => {
+      await api
+        .post('/api/users')
+        .send(helper.newUserWithExistingUsername)
+        .expect(400)
+    })
+
+    test('if required properties are missing', async () => {
+      await api
+        .post('/api/users')
+        .send(helper.newUserWithoutUsername)
+        .expect(400)
+      
+      await api
+        .post('/api/users')
+        .send(helper.newUserWithoutPassword)
+        .expect(400)
+    })
+
+    test('if properties are invalid', async () => {
+      await api
+        .post('/api/users')
+        .send(helper.newUserWithInvalidUsername)
+        .expect(400)
+      
+      await api
+        .post('/api/users')
+        .send(helper.newUserWithInvalidPassword)
+        .expect(400)
+    })
   })
 })
 
