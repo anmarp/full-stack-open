@@ -4,7 +4,6 @@ const helper = require('./test-helper')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
-const { initialBlogs } = require('./test-helper')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -19,7 +18,7 @@ test('all blogs are returned in JSON format', async () => {
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
-  
+
   const response = await api.get('/api/blogs')
   expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
@@ -30,26 +29,31 @@ test('unique identifier property is named id', async () => {
 })
 
 test('a new blog is successfully added to the database', async () => {
-  const blog = {
-    title: 'Plok',
-    author: 'P. Lokker',
-    url: 'https://www.kookle.com/',
-    likes: 2
-  }
-
   await api
     .post('/api/blogs')
-    .send(blog)
+    .send(helper.newBlog)
     .expect(200)
     .expect('Content-Type', /application\/json/)
 
-    const response = await api.get('/api/blogs')
-    expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
+  const response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
 
-    for (i = 0; i < Object.keys(blog).length; i++) {
-      expect(response.body[helper.initialBlogs.length])
-        .toHaveProperty(Object.keys(blog)[i], Object.values(blog)[i])
-    }
+  for (i = 0; i < Object.keys(helper.newBlog).length; i++) {
+    expect(response.body[helper.initialBlogs.length])
+      .toHaveProperty(Object.keys(helper.newBlog)[i], Object.values(helper.newBlog)[i])
+  }
+})
+
+test('likes of a new blog default to 0 when not defined', async () => {
+  await api
+    .post('/api/blogs')
+    .send(helper.newBlogWithoutLikes)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
+  expect(response.body[helper.initialBlogs.length]).toHaveProperty('likes', 0)
 })
 
 afterAll(() => {

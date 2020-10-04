@@ -13,6 +13,21 @@ const initialBlogs = [
   },
 ]
 
+const newBlog = {
+  title: 'Plok',
+  author: 'P. Lokker',
+  url: 'https://www.kookle.com/',
+  likes: 2
+}
+
+const newBlogWithoutLikes = {
+  title: 'Klop',
+  author: 'R. Ekkolp',
+  url: 'https://www.elkook.com/'
+}
+
 module.exports = {
-  initialBlogs
+  initialBlogs,
+  newBlog,
+  newBlogWithoutLikes
 }
