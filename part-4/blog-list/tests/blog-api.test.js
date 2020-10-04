@@ -67,6 +67,22 @@ describe('when a post request is made', () => {
   })
 })
 
+describe('when a delete request is made', () => {
+  test('a blog is successfully removed from the database', async () => {
+    let response = await api.get('/api/blogs')
+    const blogToDelete = response.body[0]
+    const blogsLength = response.body.length
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+    
+    response = await api.get('/api/blogs')
+    expect(response.body.length).toBe(blogsLength - 1)
+    expect(response.body[0]).not.toEqual(blogToDelete)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
