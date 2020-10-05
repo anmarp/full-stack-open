@@ -22,8 +22,8 @@ describe('blogs', () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      const response = await api.get('/api/blogs')
-      expect(response.body).toHaveLength(helper.initialBlogs.length)
+      const blogs = await helper.blogsInDb()
+      expect(blogs.length).toBe(helper.initialBlogs.length)
     })
 
     test('their unique identifier property is named id', async () => {
@@ -109,6 +109,18 @@ describe('users', () => {
     await Promise.all(promiseArray)
   })
 
+  describe('when all users are fetched', () => {
+    test('they are returned in JSON format', async () => {
+      await api
+        .get('/api/users')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const users = await helper.usersInDb()
+      expect(users.length).toBe(helper.initialBlogs.length)
+    })
+  })
+
   describe('when a new user is added', () => {
     test('they are saved correctly to the database if all values are valid', async () => {
       const newUser = helper.newUser.default
@@ -122,6 +134,18 @@ describe('users', () => {
       expect(users.length).toBe(helper.initialUsers.length + 1)
       const savedUser = users[users.length - 1]
       expect(helper.isSavedCorrectly(newUser, savedUser)).toBe(true)
+    })
+
+    test('their passwordHash value is not returned', async () => {
+      const newUser = helper.newUser.default
+      await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const blogs = await helper.blogsInDb()
+      expect(blogs[blogs.length - 1].passwordHash).not.toBeDefined()
     })
 
     describe('server responds with a 400 status code', () => {
