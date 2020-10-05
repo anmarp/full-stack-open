@@ -1,3 +1,6 @@
+const Blog = require('../models/blog')
+const User = require('../models/user')
+
 const initialBlogs = [
   {
     title: 'Blog',
@@ -14,25 +17,24 @@ const initialBlogs = [
 ]
 
 const newBlog = {
-  title: 'Plok',
-  author: 'P. Lokker',
-  url: 'https://www.kookle.com/',
-  likes: 2
-}
-
-const newBlogWithoutLikes = {
-  title: 'Klop',
-  author: 'R. Ekkolp',
-  url: 'https://www.elkook.com/'
-}
-
-const newBlogWithoutTitleAndUrl = {
-  author: 'Bee Logger',
-  likes: 3
-}
-
-const updatedBlog = {
-  likes: 4
+  default: {
+    title: 'Plok',
+    author: 'P. Lokker',
+    url: 'https://www.kookle.com/',
+    likes: 2
+  },
+  withoutLikes: {
+    title: 'Klop',
+    author: 'R. Ekkolp',
+    url: 'https://www.elkook.com/'
+  },
+  withoutTitleAndUrl: {
+    author: 'Bee Logger',
+    likes: 3
+  },
+  updated: {
+    likes: 4
+  }
 }
 
 const initialUsers = [
@@ -49,50 +51,65 @@ const initialUsers = [
 ]
 
 const newUser = {
-  username: 'user03',
-  name: 'User Three',
-  password: 'p4ssw0rd'
+  default: {
+    username: 'user03',
+    name: 'User Three',
+    password: 'p4ssw0rd'
+  },
+  withExistingUsername: {
+    username: 'user01',
+    name: 'User Four',
+    password: 'p4ssw0rd'
+  },
+  withoutUsername: {
+    name: 'User Five',
+    password: 'p4ssw0rd'
+  },
+  withoutPassword: {
+    username: 'user06',
+    name: 'User Six'
+  },
+  withInvalidUsername: {
+    username: 'us',
+    name: 'User Seven',
+    password: 'p4ssw0rd'
+  },
+  withInvalidPassword: {
+    username: 'user08',
+    name: 'User Eight',
+    password: 'p4'
+  }
 }
 
-const newUserWithExistingUsername = {
-  username: 'user01',
-  name: 'User Four',
-  password: 'p4ssw0rd'
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map(blog => blog.toJSON())
 }
 
-const newUserWithoutUsername = {
-  name: 'User Five',
-  password: 'p4ssw0rd'
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(user => user.toJSON())
 }
 
-const newUserWithoutPassword = {
-  username: 'user06',
-  name: 'User Six'
-}
+const isSavedCorrectly = (object, savedObject) => {
+  const keys = Object.keys(object)
 
-const newUserWithInvalidUsername = {
-  username: 'us',
-  name: 'User Seven',
-  password: 'p4ssw0rd'
-}
+  for (i = 0; i < keys.length; i++) {
+    const key = keys[i]
+    if (key !== 'password' && savedObject[key] !== object[key]) {
+      return false
+    }
+  }
 
-const newUserWithInvalidPassword = {
-  username: 'user08',
-  name: 'User Eight',
-  password: 'p4'
+  return true
 }
 
 module.exports = {
   initialBlogs,
   newBlog,
-  newBlogWithoutLikes,
-  newBlogWithoutTitleAndUrl,
-  updatedBlog,
   initialUsers,
   newUser,
-  newUserWithExistingUsername,
-  newUserWithoutUsername,
-  newUserWithoutPassword,
-  newUserWithInvalidUsername,
-  newUserWithInvalidPassword
+  blogsInDb,
+  usersInDb,
+  isSavedCorrectly
 }
