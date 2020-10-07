@@ -9,9 +9,9 @@ const User = require('../models/user')
 describe('blogs', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
-    let blogObjects = helper.initialBlogs
+    const blogObjects = helper.initialBlogs
       .map(blog => new Blog(blog))
-    let promiseArray = blogObjects.map(blog => blog.save())
+    const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
   })
 
@@ -103,9 +103,10 @@ describe('blogs', () => {
 describe('users', () => {
   beforeEach(async () => {
     await User.deleteMany({})
-    let userObjects = helper.initialUsers
+    const initialUsers = await helper.initialUsers()
+    const userObjects = initialUsers
       .map(user => new User(user))
-    promiseArray = userObjects.map(user => user.save())
+    const promiseArray = userObjects.map(user => user.save())
     await Promise.all(promiseArray)
   })
 
@@ -123,6 +124,7 @@ describe('users', () => {
 
   describe('when a new user is added', () => {
     test('they are saved correctly to the database if all values are valid', async () => {
+      const usersAtStart = await helper.usersInDb()
       const newUser = helper.newUser.default
       await api
         .post('/api/users')
@@ -130,9 +132,9 @@ describe('users', () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      const users = await helper.usersInDb()
-      expect(users.length).toBe(helper.initialUsers.length + 1)
-      const savedUser = users[users.length - 1]
+      const usersAtEnd = await helper.usersInDb()
+      expect(usersAtEnd.length).toBe(usersAtStart.length + 1)
+      const savedUser = usersAtEnd[usersAtEnd.length - 1]
       expect(helper.isSavedCorrectly(newUser, savedUser)).toBe(true)
     })
 

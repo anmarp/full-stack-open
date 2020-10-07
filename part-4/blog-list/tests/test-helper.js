@@ -1,5 +1,6 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const bcrypt = require('bcrypt')
 
 const initialBlogs = [
   {
@@ -37,18 +38,28 @@ const newBlog = {
   }
 }
 
-const initialUsers = [
-  {
-    username: 'user01',
-    name: 'User One',
-    password: 'p4ssw0rd'
-  },
-  {
-    username: 'user02',
-    name: 'User Two',
-    password: 'p4ssw0rd'
+const initialUsers = async () => {
+  const users = [
+    {
+      username: 'user01',
+      name: 'User One',
+      password: 'p4ssw0rd'
+    },
+    {
+      username: 'user02',
+      name: 'User Two',
+      password: 'p4ssw0rd'
+    }
+  ]
+
+  for (i = 0; i < users.length; i++) {
+    const saltRounds = 10
+    users[i].passwordHash = await bcrypt
+      .hash(users[i].password, saltRounds)
   }
-]
+
+  return users
+}
 
 const newUser = {
   default: {
