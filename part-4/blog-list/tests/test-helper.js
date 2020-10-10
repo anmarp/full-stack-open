@@ -92,6 +92,11 @@ const newUser = {
   }
 }
 
+const loginCredentials = {
+  username: 'user01',
+  password: 'p4ssw0rd'
+}
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())
@@ -120,6 +125,7 @@ module.exports = {
   newBlog,
   initialUsers,
   newUser,
+  loginCredentials,
   blogsInDb,
   usersInDb,
   isSavedCorrectly

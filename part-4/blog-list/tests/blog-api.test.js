@@ -34,11 +34,19 @@ describe('blogs', () => {
 
   describe('when a new blog is added', () => {
     test('it is saved correctly to the database', async () => {
+      const response = await api
+        .post('/api/login')
+        .send(helper.loginCredentials)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const token = response.body.token
       const newBlog = helper.newBlog.default
 
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization', `bearer ${token}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
@@ -49,9 +57,18 @@ describe('blogs', () => {
     })
 
     test('its likes default to 0 if not defined', async () => {
+      const response = await api
+        .post('/api/login')
+        .send(helper.loginCredentials)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const token = response.body.token
+
       await api
         .post('/api/blogs')
         .send(helper.newBlog.withoutLikes)
+        .set('Authorization', `bearer ${token}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
@@ -59,22 +76,55 @@ describe('blogs', () => {
       expect(blogs[helper.initialBlogs.length]).toHaveProperty('likes', 0)
     })
 
-    test('the server responds with a 400 status code if it is missing required properties', async () => {
+    test('the server responds with a 400 status code if required properties are missing', async () => {
+      const response = await api
+        .post('/api/login')
+        .send(helper.loginCredentials)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const token = response.body.token
+
       await api
         .post('/api/blogs')
         .send(helper.newBlog.withoutTitleAndUrl)
+        .set('Authorization', `bearer ${token}`)
         .expect(400)
+    })
+
+    test('the server responds with a 401 status code if a token is missing', async () => {
+      await api
+        .post('/api/blogs')
+        .send(helper.newBlog.default)
+        .expect(401)
     })
   })
 
   describe('when a blog is deleted', () => {
     test('it is successfully removed from the database', async () => {
+      const loginResponse = await api
+        .post('/api/login')
+        .send(helper.loginCredentials)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const token = loginResponse.body.token
+
+      const blogToDelete = helper.newBlog.default
+
+      const blogResponse = await api
+        .post('/api/blogs')
+        .send(blogToDelete)
+        .set('Authorization', `bearer ${token}`)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
       const blogsAtStart = await helper.blogsInDb()
-      const blogToDelete = blogsAtStart[0]
       const blogsLength = blogsAtStart.length
 
       await api
-        .delete(`/api/blogs/${blogToDelete.id}`)
+        .delete(`/api/blogs/${blogResponse.body.id}`)
+        .set('Authorization', `bearer ${token}`)
         .expect(204)
 
       const blogsAtEnd = await helper.blogsInDb()
