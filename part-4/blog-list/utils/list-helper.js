@@ -20,24 +20,21 @@ const favouriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs) => {
-  if (blogs.length === 0) {
-    return null
-  } else {
-    const mostActiveAuthor = maxBy(Object.entries(countBy(blogs, value => value.author)), (author) => author[1])
+  if (blogs.length === 0) return null
 
-    return { author: mostActiveAuthor[0], blogs: mostActiveAuthor[1] }
-  }
+  const mostActiveAuthor = maxBy(Object.entries(countBy(blogs, value => value.author)), (author) => author[1])
+
+  return { author: mostActiveAuthor[0], blogs: mostActiveAuthor[1] }
 }
 
 const mostLikes = (blogs) => {
-  if (blogs.length === 0) {
-    return null
-  } else {
-    const authors = groupBy(Object.entries(groupBy(blogs, blog => blog.author)), author => sumBy(author[1], (blog) => blog.likes))
-    const mostLikedAuthor = maxBy(Object.entries(authors), (author) => Number(author[0]))
+  if (blogs.length === 0) return null
 
-    return { author: mostLikedAuthor[1][0][0], likes: Number(mostLikedAuthor[0]) }
-  }
+  const blogsByAuthors = Object.entries(groupBy(blogs, blog => blog.author))
+  const likesPerAuthor = groupBy(blogsByAuthors, author => sumBy(author[1], (blog) => blog.likes))
+  const mostLikedAuthor = maxBy(Object.entries(likesPerAuthor), (author) => Number(author[0]))
+
+  return { author: mostLikedAuthor[1][0][0], likes: Number(mostLikedAuthor[0]) }
 }
 
 module.exports = {
