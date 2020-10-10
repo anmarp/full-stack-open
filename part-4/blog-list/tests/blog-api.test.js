@@ -6,6 +6,18 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
+let token = ''
+
+const getToken = async () => {
+  const response = await api
+    .post('/api/login')
+    .send(helper.loginCredentials)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  token = response.body.token
+}
+
 describe('blogs', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
@@ -13,6 +25,14 @@ describe('blogs', () => {
       .map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
+
+    const response = await api
+      .post('/api/login')
+      .send(helper.loginCredentials)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    token = response.body.token
   })
 
   describe('when all blogs are fetched', () => {
@@ -34,13 +54,6 @@ describe('blogs', () => {
 
   describe('when a new blog is added', () => {
     test('it is saved correctly to the database', async () => {
-      const response = await api
-        .post('/api/login')
-        .send(helper.loginCredentials)
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
-
-      const token = response.body.token
       const newBlog = helper.newBlog.default
 
       await api
@@ -57,14 +70,6 @@ describe('blogs', () => {
     })
 
     test('its likes default to 0 if not defined', async () => {
-      const response = await api
-        .post('/api/login')
-        .send(helper.loginCredentials)
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
-
-      const token = response.body.token
-
       await api
         .post('/api/blogs')
         .send(helper.newBlog.withoutLikes)
@@ -77,14 +82,6 @@ describe('blogs', () => {
     })
 
     test('the server responds with a 400 status code if required properties are missing', async () => {
-      const response = await api
-        .post('/api/login')
-        .send(helper.loginCredentials)
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
-
-      const token = response.body.token
-
       await api
         .post('/api/blogs')
         .send(helper.newBlog.withoutTitleAndUrl)
@@ -102,14 +99,6 @@ describe('blogs', () => {
 
   describe('when a blog is deleted', () => {
     test('it is successfully removed from the database', async () => {
-      const loginResponse = await api
-        .post('/api/login')
-        .send(helper.loginCredentials)
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
-
-      const token = loginResponse.body.token
-
       const blogToDelete = helper.newBlog.default
 
       const blogResponse = await api
