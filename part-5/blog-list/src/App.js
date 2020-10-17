@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -30,7 +32,7 @@ const App = () => {
   }, [])
 
   const notify = (message, isError) => {
-    setNotification({ 
+    setNotification({
       message: message,
       isError: isError
     })
@@ -87,67 +89,8 @@ const App = () => {
       })
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <h3>Log In</h3>
-      <div>
-        Username:&nbsp;
-          <input
-          type='text'
-          value={username}
-          name='Username'
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        Password:&nbsp;
-          <input
-          type='password'
-          value={password}
-          name='Password'
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type='submit'>Log In</button>
-    </form>
-  )
-
   const loginInfo = () => (
     <p>{user.name} logged in <button onClick={handleLogout}>Log Out</button></p>
-  )
-
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <h3>Create New</h3>
-      <div>
-        Title:&nbsp;
-          <input
-          type='text'
-          value={title}
-          name='Title'
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </div>
-      <div>
-        Author:&nbsp;
-          <input
-          type='text'
-          value={author}
-          name='Author'
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-        URL:&nbsp;
-          <input
-          type='text'
-          value={url}
-          name='URL'
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button type='submit'>Add</button>
-    </form>
   )
 
   const blogList = () => (
@@ -161,10 +104,24 @@ const App = () => {
       <h2>Blogs</h2>
       <Notification notification={notification} />
       {user === null
-        ? loginForm()
+        ? <LoginForm
+          username={username}
+          password={password}
+          handleLogin={handleLogin}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+        />
         : <div>
           {loginInfo()}
-          {blogForm()}
+          <BlogForm
+            title={title}
+            author={author}
+            url={url}
+            addBlog={addBlog}
+            handleTitleChange={({ target }) => setTitle(target.value)}
+            handleAuthorChange={({ target }) => setAuthor(target.value)}
+            handleUrlChange={({ target }) => setUrl(target.value)}
+          />
           {blogList()}
         </div>
       }
