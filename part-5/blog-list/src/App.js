@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,6 +12,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -27,6 +29,16 @@ const App = () => {
     }
   }, [])
 
+  const notify = (message, isError) => {
+    setNotification({ 
+      message: message,
+      isError: isError
+    })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -41,14 +53,16 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      notify('Logged in', false)
     } catch (exception) {
-      console.log(exception)
+      notify('Wrong username or password', true)
     }
   }
 
-  const handleLogout = (event) => {
+  const handleLogout = async (event) => {
     window.localStorage.clear()
     window.location.reload()
+    notify('Logged out', false)
   }
 
   const addBlog = (event) => {
@@ -66,6 +80,10 @@ const App = () => {
         setTitle('')
         setAuthor('')
         setUrl('')
+        notify(`Added ${returnedBlog.title} by ${returnedBlog.author}`)
+      })
+      .catch(error => {
+        notify(error.response.data.error, true)
       })
   }
 
@@ -141,6 +159,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
+      <Notification notification={notification} />
       {user === null
         ? loginForm()
         : <div>
