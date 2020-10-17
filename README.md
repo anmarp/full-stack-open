@@ -1,3 +1,4 @@
+
 # Full Stack Open 2020
 This repository houses my solutions to [Full Stack Open](https://fullstackopen.com/en) 2020 exercises. The course focuses on JavaScript based web development. Topics include React, Redux, Node.js, MongoDB, GraphQL and TypeScript.
 
@@ -8,6 +9,7 @@ This repository houses my solutions to [Full Stack Open](https://fullstackopen.c
 | 2 | 20/20 | [Course information](https://github.com/anmarp/full-stack-open/tree/master/part-1/course-info), [Phonebook (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-2/phonebook), [Countries](https://github.com/anmarp/full-stack-open/tree/master/part-2/countries) |
 | 3 | 22/22 | [Phonebook (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-2/phonebook), [Phonebook (back end)](https://github.com/anmarp/fso-phonebook) |
 | 4 | 22/22 | [Blog list (back end)](https://github.com/anmarp/full-stack-open/tree/master/part-4/blog-list) |
+| 5 | 4/22 | [Blog list (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-5/blog-list) |
 
 ## Parts
 
