@@ -8,6 +8,9 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -48,11 +51,30 @@ const App = () => {
     window.location.reload()
   }
 
+  const addBlog = (event) => {
+    event.preventDefault()
+
+    const blogObject = {
+      title: title,
+      author: author,
+      url: url
+    }
+
+    blogService.create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setTitle('')
+        setAuthor('')
+        setUrl('')
+      })
+  }
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
+      <h3>Log In</h3>
       <div>
         Username:&nbsp;
-            <input
+          <input
           type='text'
           value={username}
           name='Username'
@@ -61,7 +83,7 @@ const App = () => {
       </div>
       <div>
         Password:&nbsp;
-            <input
+          <input
           type='password'
           value={password}
           name='Password'
@@ -74,6 +96,40 @@ const App = () => {
 
   const loginInfo = () => (
     <p>{user.name} logged in <button onClick={handleLogout}>Log Out</button></p>
+  )
+
+  const blogForm = () => (
+    <form onSubmit={addBlog}>
+      <h3>Create New</h3>
+      <div>
+        Title:&nbsp;
+          <input
+          type='text'
+          value={title}
+          name='Title'
+          onChange={({ target }) => setTitle(target.value)}
+        />
+      </div>
+      <div>
+        Author:&nbsp;
+          <input
+          type='text'
+          value={author}
+          name='Author'
+          onChange={({ target }) => setAuthor(target.value)}
+        />
+      </div>
+      <div>
+        URL:&nbsp;
+          <input
+          type='text'
+          value={url}
+          name='URL'
+          onChange={({ target }) => setUrl(target.value)}
+        />
+      </div>
+      <button type='submit'>Add</button>
+    </form>
   )
 
   const blogList = () => (
@@ -89,6 +145,7 @@ const App = () => {
         ? loginForm()
         : <div>
           {loginInfo()}
+          {blogForm()}
           {blogList()}
         </div>
       }
