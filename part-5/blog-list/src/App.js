@@ -80,13 +80,27 @@ const App = () => {
       })
   }
 
+  const handleLike = (id) => {
+    const blog = blogs.find(blog => blog.id === id)
+    const updatedBlog = { ...blog, user: blog.user.id, likes: blog.likes += 1 }
+
+    blogService
+      .update(id, updatedBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+      })
+      .catch(error => {
+        notify(error.response.data.error, true)
+      })
+  }
+
   const loginInfo = () => (
     <p>{user.name} logged in <button onClick={handleLogout}>Log Out</button></p>
   )
 
   const blogList = () => (
     blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} />
+      <Blog key={blog.id} blog={blog} updateLikes={handleLike} />
     )
   )
 
