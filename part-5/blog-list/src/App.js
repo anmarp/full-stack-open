@@ -94,6 +94,16 @@ const App = () => {
       })
   }
 
+  const handleRemove = (blogToRemove) => {
+    if (window.confirm(`Remove ${blogToRemove.title} by ${blogToRemove.author}?`))
+    blogService
+      .remove(blogToRemove.id)
+      .then(setBlogs(blogs.filter(blog => blog.id !== blogToRemove.id)))
+      .catch(error => {
+        notify(error.response.data.error, true)
+      })
+  }
+
   const loginInfo = () => (
     <p>{user.name} logged in <button onClick={handleLogout}>Log Out</button></p>
   )
@@ -104,7 +114,7 @@ const App = () => {
 
   const blogList = () => (
     sortedBlogs.map(blog =>
-      <Blog key={blog.id} blog={blog} updateLikes={handleLike} />
+      <Blog key={blog.id} blog={blog} updateLikes={handleLike} removeBlog={handleRemove} username={user.username} />
     )
   )
 
