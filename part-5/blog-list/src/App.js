@@ -98,8 +98,12 @@ const App = () => {
     <p>{user.name} logged in <button onClick={handleLogout}>Log Out</button></p>
   )
 
+  const sortedBlogs = blogs.sort((a, b) => {
+    return b.likes - a.likes
+  })
+
   const blogList = () => (
-    blogs.map(blog =>
+    sortedBlogs.map(blog =>
       <Blog key={blog.id} blog={blog} updateLikes={handleLike} />
     )
   )
