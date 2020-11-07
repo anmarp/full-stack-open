@@ -10,15 +10,15 @@ const Blog = ({ blog, updateLikes, removeBlog, username }) => {
     marginTop: 5,
   }
 
-  const toggleVisibility = (event) => {
+  const toggleVisibility = () => {
     setVisible(!visible)
   }
 
-  const handleLike = (event) => {
+  const handleLike = () => {
     updateLikes(blog.id)
   }
 
-  const handleRemove = (event) => {
+  const handleRemove = () => {
     removeBlog(blog)
   }
 

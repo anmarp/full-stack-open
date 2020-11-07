@@ -7,7 +7,7 @@ const LoginForm = ({ username, password, handleLogin, handleUsernameChange, hand
       <h3>Log In</h3>
       <div>
         Username:&nbsp;
-          <input
+        <input
           type='text'
           value={username}
           name='Username'
@@ -16,7 +16,7 @@ const LoginForm = ({ username, password, handleLogin, handleUsernameChange, hand
       </div>
       <div>
         Password:&nbsp;
-          <input
+        <input
           type='password'
           value={password}
           name='Password'

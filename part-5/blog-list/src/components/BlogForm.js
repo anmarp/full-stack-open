@@ -7,7 +7,7 @@ const BlogForm = ({ createBlog }) => {
 
   const addBlog = (event) => {
     event.preventDefault()
-    
+
     createBlog({
       title: title,
       author: author,
@@ -23,7 +23,7 @@ const BlogForm = ({ createBlog }) => {
     <form onSubmit={addBlog}>
       <div>
         Title:&nbsp;
-          <input
+        <input
           type='text'
           value={title}
           name='Title'
@@ -32,7 +32,7 @@ const BlogForm = ({ createBlog }) => {
       </div>
       <div>
         Author:&nbsp;
-          <input
+        <input
           type='text'
           value={author}
           name='Author'
@@ -41,7 +41,7 @@ const BlogForm = ({ createBlog }) => {
       </div>
       <div>
         URL:&nbsp;
-          <input
+        <input
           type='text'
           value={url}
           name='URL'

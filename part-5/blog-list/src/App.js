@@ -13,7 +13,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
-  
+
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const App = () => {
     }
   }
 
-  const handleLogout = async (event) => {
+  const handleLogout = async () => {
     window.localStorage.clear()
     window.location.reload()
     notify('Logged out', false)
@@ -95,13 +95,14 @@ const App = () => {
   }
 
   const handleRemove = (blogToRemove) => {
-    if (window.confirm(`Remove ${blogToRemove.title} by ${blogToRemove.author}?`))
-    blogService
-      .remove(blogToRemove.id)
-      .then(setBlogs(blogs.filter(blog => blog.id !== blogToRemove.id)))
-      .catch(error => {
-        notify(error.response.data.error, true)
-      })
+    if (window.confirm(`Remove ${blogToRemove.title} by ${blogToRemove.author}?`)) {
+      blogService
+        .remove(blogToRemove.id)
+        .then(setBlogs(blogs.filter(blog => blog.id !== blogToRemove.id)))
+        .catch(error => {
+          notify(error.response.data.error, true)
+        })
+    }
   }
 
   const loginInfo = () => (
