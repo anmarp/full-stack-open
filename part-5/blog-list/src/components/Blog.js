@@ -26,7 +26,7 @@ const Blog = ({ blog, updateLikes, removeBlog, username }) => {
     <div style={blogStyle}>
       {blog.title} by {blog.author} <button onClick={toggleVisibility}>{visible ? 'Hide' : 'View'}</button><br />
       {visible
-        ? <div>
+        ? <div className='blogDetails'>
           {blog.url}<br />
           {blog.likes} likes <button onClick={handleLike}>Like</button><br />
           {blog.user.name}<br />
