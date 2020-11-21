@@ -17,11 +17,13 @@ describe('<Blog />', () => {
     }
   }
 
+  const mockHandler = jest.fn()
+
   let component
 
   beforeEach(() => {
     component = render(
-      <Blog blog={blog} />
+      <Blog blog={blog} updateLikes={mockHandler} />
     )
   })
 
@@ -36,12 +38,22 @@ describe('<Blog />', () => {
     expect(component.container).not.toHaveTextContent(blog.user.name)
   })
 
-  test('clicking the button renders the other details', () => {
+  test('clicking the view button renders the other details', () => {
     const button = component.getByText('View')
     fireEvent.click(button)
 
     expect(component.container).toHaveTextContent(blog.url)
     expect(component.container).toHaveTextContent(blog.likes)
     expect(component.container).toHaveTextContent(blog.user.name)
+  })
+
+  test('clicking the like button calls the event handler twice', () => {
+    const viewButton = component.getByText('View')
+    fireEvent.click(viewButton)
+    const likeButton = component.getByText('Like')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })
