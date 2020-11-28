@@ -15,7 +15,7 @@ const Notification = ({ notification }) => {
   }
 
   return (
-    <p style={notificationStyle}>{notification.message}</p>
+    <p id='notification' style={notificationStyle}>{notification.message}</p>
   )
 }
 
