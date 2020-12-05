@@ -106,7 +106,7 @@ const App = () => {
   }
 
   const loginInfo = () => (
-    <p>{user.name} logged in <button onClick={handleLogout}>Log Out</button></p>
+    <p>{user.name} logged in <button id='#logout-button' onClick={handleLogout}>Log Out</button></p>
   )
 
   const sortedBlogs = blogs.sort((a, b) => {
