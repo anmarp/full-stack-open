@@ -68,24 +68,25 @@ describe('Blog app', function () {
 
       cy.contains(`${blog.title} by ${blog.author}`)
     })
-    
+
     describe('and a blog exists', function () {
       beforeEach(function () {
         cy.createBlog({
           title: blog.title,
           author: blog.author,
-          url: blog.url
+          url: blog.url,
+          likes: 0
         })
       })
 
-      it('user can like a blog', function () {  
+      it('user can like a blog', function () {
         cy.get('.view-button').click()
         cy.get('.like-button').click()
-  
+
         cy.contains('1 like')
       })
 
-      it('user can delete a blog they created', function () {  
+      it('user can delete a blog they created', function () {
         cy.get('.view-button').click()
         cy.get('.remove-button').click()
 
@@ -98,6 +99,36 @@ describe('Blog app', function () {
         cy.login({ username: user02.username, password: user02.password })
         cy.get('.view-button').click()
         cy.get('.remove-button').should('not.exist')
+      })
+    })
+
+    describe('and there are multiple blogs', function () {
+      beforeEach(function () {
+        for (let i = 0; i < 10; i++) {
+          const likes = Math.floor(Math.random() * Math.floor(100))
+          cy.createBlog({
+            title: blog.title,
+            author: blog.author,
+            url: blog.url,
+            likes: likes
+          })
+        }
+      })
+
+      it('they are ordered by number of likes', function () {
+        let likesArr = []
+
+        cy.get('.view-button').click({ multiple: true })
+        cy.get('.likes').then(($els) => {
+          likesArr = Array.from($els, el => Number(el.innerText.split(' ')[0]))
+        }).then(() => {
+            let previousLikes = likesArr[0]
+
+            likesArr.forEach(likes => {
+              expect(likes).to.be.at.most(previousLikes)
+              previousLikes = likes
+            })
+          })
       })
     })
   })
