@@ -8,10 +8,9 @@ This repository houses my solutions to [Full Stack Open](https://fullstackopen.c
 | 2 | 20/20 | [Course information](https://github.com/anmarp/full-stack-open/tree/master/part-1/course-info), [Phonebook (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-2/phonebook), [Countries](https://github.com/anmarp/full-stack-open/tree/master/part-2/countries) |
 | 3 | 22/22 | [Phonebook (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-2/phonebook), [Phonebook (back end)](https://github.com/anmarp/fso-phonebook) |
 | 4 | 22/22 | [Blog list (back end)](https://github.com/anmarp/full-stack-open/tree/master/part-4/blog-list) |
-| 5 | 10/22 | [Blog list (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-5/blog-list) |
+| 5 | 22/22 | [Blog list (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-5/blog-list) |
 
 ## Parts
-
 
 ### :heavy_check_mark: Part 0: Fundamentals of web apps
 
@@ -49,7 +48,12 @@ More back end exercises with a focus on testing. Other topics covered in this pa
 
 My solutions: [Blog list (back end)](https://github.com/anmarp/full-stack-open/tree/master/part-4/blog-list)
 
-### :heavy_multiplication_x: Part 5: Testing React apps
+### :heavy_check_mark: Part 5: Testing React apps
+Front end exercises including implementing a login feature. Most exercises focused heavily on front end or end-to-end testing.
+
+<sub>:heavy_check_mark: 22/22 completed on 12 December 2020</sub>
+My solutions: [Blog list (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-5/blog-list)
+
 ### :heavy_multiplication_x: Part 6: State management with Redux
 ### :heavy_multiplication_x: Part 7: React router, custom hooks, styling app with CSS and webpack
 ### :heavy_multiplication_x: Part 8: GraphQL
