@@ -9,6 +9,7 @@ This repository houses my solutions to [Full Stack Open](https://fullstackopen.c
 | 3 | 22/22 | [Phonebook (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-2/phonebook), [Phonebook (back end)](https://github.com/anmarp/fso-phonebook) |
 | 4 | 22/22 | [Blog list (back end)](https://github.com/anmarp/full-stack-open/tree/master/part-4/blog-list) |
 | 5 | 22/22 | [Blog list (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-5/blog-list) |
+| 6 | 2/21 | [Unicafe revisited](https://github.com/anmarp/full-stack-open/tree/master/part-6/unicafe-revisited) |
 
 ## Parts
 
@@ -52,6 +53,7 @@ My solutions: [Blog list (back end)](https://github.com/anmarp/full-stack-open/t
 Front end exercises including implementing a login feature. Most exercises focused heavily on front end or end-to-end testing.
 
 <sub>:heavy_check_mark: 22/22 completed on 12 December 2020</sub>
+
 My solutions: [Blog list (front end)](https://github.com/anmarp/full-stack-open/tree/master/part-5/blog-list)
 
 ### :heavy_multiplication_x: Part 6: State management with Redux
